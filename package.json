@@ -1,0 +1,19 @@
+{
+  "name": "show-selection",
+  "version": "1.0.0",
+  "description": "APIs to select or deselect shows, and to list shows already selected",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenmutch/show-selection.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kenmutch/show-selection/issues"
+  },
+  "homepage": "https://github.com/kenmutch/show-selection#readme"
+}

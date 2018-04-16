@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  ListSelectedShowsFUnction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/index.listSelectedShows
+      Runtime: nodejs8.10
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /selected-shows
+            Method: get
