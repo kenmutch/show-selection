@@ -57,7 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
+<<<<<<< HEAD
 Vagrantfile
 bootstrap.sh
 .vagrant
 
+=======
+>>>>>>> 77bbe8c756219d0b23e411a0d44c47d703d72443
