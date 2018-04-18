@@ -2,8 +2,9 @@ var express = require('express');
 var app = express();
 
 app.get('/selected-shows', (req, res) => {
+  console.log('req', req);
   res.send({
-    "Output": "Hello World!"
+    "request": "Hello World!"
   });
 });
 
