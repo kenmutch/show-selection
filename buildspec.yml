@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo 'Entering build phase'
+      - npm install
+      - aws cloudformation package --template-file template.yml --s3-bucket aws-codebuild-ap-southeast-2-828944938596-show-selection
+                                   --output-template-file outputSamTemplate.yml
+artifacts:
+  type: zip
+  files:
+    - template.yml
+    - outputSamTemplate.yml
+
+vagrat

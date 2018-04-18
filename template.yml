@@ -11,4 +11,4 @@ Resources:
           Type: Api
           Properties:
             Path: /selected-shows
-            Method: get
+            Method: GET
