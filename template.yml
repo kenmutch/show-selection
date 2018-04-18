@@ -1,14 +1,33 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+- AWS::CodeStar
+
+Parameters:
+  ProjectId:
+    Type: String
+    Description: AWS CodeStar projectID used to associate new resources to team members
+
 Resources:
-  ListSelectedShowsFUnction:
+  HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/index.listSelectedShows
+      Handler: src/index.handler
       Runtime: nodejs8.10
+      Environment:
+        Variables:
+          NODE_ENV: production
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
-        GetResource:
+        GetEvent:
           Type: Api
           Properties:
-            Path: /selected-shows
-            Method: GET
+            Path: /
+            Method: get
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post

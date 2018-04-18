@@ -1,14 +1,22 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      # Install dependencies needed for running tests
+      - npm install
+
+      # Upgrade AWS CLI to the latest version
+      - pip install --upgrade awscli
+  pre_build:
+    commands:
+      # Discover and run unit tests in the 'tests' directory
+      - npm test
   build:
     commands:
-      - echo 'Entering build phase'
-      - npm install
-      - aws cloudformation package --template-file template.yml --s3-bucket aws-codebuild-ap-southeast-2-828944938596-show-selection
-                                   --output-template-file outputSamTemplate.yml
+      # Use AWS SAM to package the application using AWS CloudFormation
+      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template template-export.yml
 artifacts:
   type: zip
   files:
-    - template.yml
-    - outputSamTemplate.yml
+    - template-export.yml
