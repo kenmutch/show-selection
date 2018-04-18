@@ -57,8 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+# Vagrant stuff
 Vagrantfile
 bootstrap.sh
 .vagrant
+
+# Mac stuff
 .DS_Store
 

@@ -12,5 +12,3 @@ artifacts:
   files:
     - template.yml
     - outputSamTemplate.yml
-
-vagrat
