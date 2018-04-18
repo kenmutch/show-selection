@@ -34,5 +34,5 @@ Resources:
         DeleteEvent:
           Type: Api
           Properties:
-            Path: /selected-shows/:id
+            Path: /selected-shows/{id}
             Method: delete
