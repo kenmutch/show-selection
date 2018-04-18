@@ -24,10 +24,15 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /selected-shows
             Method: get
         PostEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /selected-shows
             Method: post
+        DeleteEvent:
+          Type: Api
+          Properties:
+            Path: /selected-shows/:id
+            Method: delete
