@@ -1,14 +1,14 @@
 var express = require('express');
 var authParser  = require('./aws-apigw-cognito-user-auth-parser');
+var _get = require('lodash.get');
 var app = express();
 
 
 app.use(authParser({}));
 
 app.get('/selected-shows', (req, res) => {
-  console.log('req.authContext', req.authContext)
   res.send({
-    "Output": "Hello World!"
+    "Output": "Hello " + _get(req, 'authContext.claims.username', 'anonymous')
   });
 });
 
