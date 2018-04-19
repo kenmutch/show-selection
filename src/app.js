@@ -6,6 +6,7 @@ var app = express();
 app.use(authParser({}));
 
 app.get('/selected-shows', (req, res) => {
+  console.log('req.authContext', req.authContext)
   res.send({
     "Output": "Hello World!"
   });
