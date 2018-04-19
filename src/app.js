@@ -1,8 +1,11 @@
 var express = require('express');
+var authParser  = require('./aws-apigw-cognito-user-auth-parser');
 var app = express();
 
+
+app.use(authParser({}));
+
 app.get('/selected-shows', (req, res) => {
-  console.log('req', req);
   res.send({
     "Output": "Hello World!"
   });
