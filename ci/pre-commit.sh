@@ -1,3 +1,4 @@
 #!/bin/bash
 
-npm run precommit
+echo "Running pre-commit hook..."
+npm run pre-commit
