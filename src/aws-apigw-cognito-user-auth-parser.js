@@ -5,8 +5,10 @@ module.exports = function(options) {
         try {
             const gatewayEvent = JSON.parse(urldecode(req.headers['x-apigateway-event']));
             console.log('gatewayEvent', gatewayEvent);
-            var authContext = gatewayEvent.requestContext.Authorizer.claims;
-            console.log('authContext', authContext);
+            var requestContext = gatewayEvent.requestContext
+            console.log('authContext', requestContext);
+            var claims = requestContext.authorizer.claims;
+            console.log('claims', claims);
             next();
         }
         catch(e) {
