@@ -65,3 +65,6 @@ bootstrap.sh
 # Mac stuff
 .DS_Store
 
+# VSCode
+.vscode
+
