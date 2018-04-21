@@ -1,0 +1,30 @@
+{
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "id",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "username",
+        "AttributeType": "S"
+      }
+    ],
+    "KeySchema": [
+      {
+        "AttributeName": "id",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "username",
+        "KeyType": "RANGE"
+      }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 1
+    },
+    "TableName": "ShowSelections",
+    "StreamSpecification": {
+        "StreamEnabled": false
+    }
+  }

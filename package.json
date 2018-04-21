@@ -1,21 +1,23 @@
 {
-    "name": "show-selection",
-    "description": "show-selection Express WebService",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-        "aws-serverless-express": "3.1.3",
-        "express": "4.16.2",
-        "lodash.get": "^4.4.2",
-        "urldecode": "^1.0.1"
-    },
-    "devDependencies": {
-        "mocha": "5.0.0",
-        "unit.js": "2.0.0",
-        "supertest": "3.0.0"
-    },
-    "scripts": {
-        "test": "mocha --recursive tests",
-        "pre-commit": "mocha --recursive tests"
-    }
+  "name": "show-selection",
+  "description": "show-selection Express WebService",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "aws-serverless-express": "3.1.3",
+    "bluebird": "^3.5.1",
+    "express": "4.16.2",
+    "lodash.get": "^4.4.2",
+    "urldecode": "^1.0.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.226.1",
+    "mocha": "5.0.0",
+    "supertest": "3.0.0",
+    "unit.js": "2.0.0"
+  },
+  "scripts": {
+    "test": "mocha --recursive tests",
+    "pre-commit": "mocha --recursive tests"
+  }
 }
