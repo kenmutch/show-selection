@@ -9,7 +9,7 @@ Parameters:
     Description: AWS CodeStar projectID used to associate new resources to team members
 
 Resources:
-  HelloWorld:
+  ShowSelectionsService:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/index.handler
@@ -17,6 +17,7 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
+          TABLE_NAME: !Ref ShowSelectionsTable
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
@@ -36,3 +37,19 @@ Resources:
           Properties:
             Path: /selected-shows/{id}
             Method: delete
+  ShowSelectionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: username
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: username
+          KeyType: Range
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 1
