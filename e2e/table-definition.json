@@ -1,21 +1,21 @@
 {
     "AttributeDefinitions": [
       {
-        "AttributeName": "id",
+        "AttributeName": "username",
         "AttributeType": "S"
       },
       {
-        "AttributeName": "username",
+        "AttributeName": "showId",
         "AttributeType": "S"
       }
     ],
     "KeySchema": [
       {
-        "AttributeName": "id",
+        "AttributeName": "username",
         "KeyType": "HASH"
       },
       {
-        "AttributeName": "username",
+        "AttributeName": "showId",
         "KeyType": "RANGE"
       }
     ],

@@ -13,11 +13,13 @@
   "devDependencies": {
     "aws-sdk": "^2.226.1",
     "mocha": "5.0.0",
+    "should": "^13.2.1",
     "supertest": "3.0.0",
     "unit.js": "2.0.0"
   },
   "scripts": {
     "test": "mocha --recursive tests",
-    "pre-commit": "mocha --recursive tests"
+    "pre-commit": "mocha --recursive tests",
+    "e2e": "mocha --recursive e2e"
   }
 }
