@@ -11,7 +11,7 @@ AWS.config.update({
 AWS.config.setPromisesDependency(Promise);
 const DB = new AWS.DynamoDB({apiVersion: '2012-10-08'});
 
-should.Assertion.add('equalSet', function (other) {   //must use 'function' here, as '=>' changes the meaning of 'this'
+should.Assertion.add('theEqualSetOf', function (other) {   //must use 'function' here, as '=>' changes the meaning of 'this'
     this.params = {operation: 'should contain the same items'}
     this.obj.should.containDeep(other);
     other.should.containDeep(this.obj);
@@ -50,10 +50,17 @@ describe('Selected Show Repository', () => {
 
     it('should list shows selected by a user', () => {
         const username = 'foo';
-        const expectedShows = items.filter(item => item.username === username);
+        const selectedShowsOfUserFoo = items.filter(item => item.username === username);
         return SelectedShowsRepository.listSelectedShows(username)
-            .then((shows) => {
-                return shows.should.equalSet(expectedShows);
-            });
+            .should.eventually.be.theEqualSetOf(selectedShowsOfUserFoo);
     });
+
+    it('should return an empty array when user has not selected any shows', () => {
+        const username = 'nobody';
+        return SelectedShowsRepository.listSelectedShows(username)
+            .should.eventually.be.theEqualSetOf([]);
+    })
+
+
 });
+
