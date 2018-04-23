@@ -9,13 +9,14 @@ module.exports = function(options) {
     const tableName = options.tableName;
 
     return {
-        listSelectedShows: listSelectedShows
+        listSelectedShows: listSelectedShows,
+        addSelectedShow: addSelectedShow
     }
 
     function listSelectedShows(username) {
 
         var params = {
-            TableName: "ShowSelections",
+            TableName: tableName,
             KeyConditionExpression: "username = :username",
             ExpressionAttributeValues: {
                 ":username": username
@@ -27,6 +28,21 @@ module.exports = function(options) {
                 return data.Items;
             });
         
+    }
+
+    function addSelectedShow(show) {
+        var params = {
+            TableName: tableName,
+            Item: {
+                "username": show.username,
+                "showId": show.showId
+            }
+        }
+
+        return docClient.put(params).promise()
+            .then((data) => {
+                return true;
+            });
     }
 
 }

@@ -31,34 +31,89 @@ describe('Selected Show Repository', () => {
         return DB.deleteTable({TableName:tableDefinition.TableName}).promise();
     });
 
-    beforeEach(() => {
+    describe('listing selected shows', () => {
 
-        return Promise.map(items, (item) => {
-            return DB.putItem({
-                Item: {
-                    "username": {
-                        S: item.username                    
+        beforeEach(() => {
+
+            return Promise.map(items, (item) => {
+                return DB.putItem({
+                    Item: {
+                        "username": {
+                            S: item.username                    
+                        },
+                        "showId": {
+                            S: item.showId
+                        }
                     },
-                    "showId": {
-                        S: item.showId
-                    }
-                },
-                TableName: tableDefinition.TableName
-            }).promise();
+                    TableName: tableDefinition.TableName
+                }).promise();
+            });
+        });
+
+        afterEach(() => {
+            return Promise.map(items, (item) => {
+                return DB.deleteItem({
+                    Key: {
+                        "username": {
+                            S: item.username
+                        },
+                        "showId": {
+                            S: item.showId
+                        }
+                    },
+                    TableName: tableDefinition.TableName
+                }).promise();
+            })
+        })
+
+        it('should list shows selected by a user', () => {
+            const username = 'foo';
+            const selectedShowsOfUserFoo = items.filter(item => item.username === username);
+            return SelectedShowsRepository.listSelectedShows(username)
+                .should.eventually.be.theEqualSetOf(selectedShowsOfUserFoo);
+        });
+
+        it('should return an empty array when user has not selected any shows', () => {
+            const username = 'nobody';
+            return SelectedShowsRepository.listSelectedShows(username)
+                .should.eventually.be.theEqualSetOf([]);
         });
     });
 
-    it('should list shows selected by a user', () => {
-        const username = 'foo';
-        const selectedShowsOfUserFoo = items.filter(item => item.username === username);
-        return SelectedShowsRepository.listSelectedShows(username)
-            .should.eventually.be.theEqualSetOf(selectedShowsOfUserFoo);
+    describe('adding a selected show', () => {
+
+        it('should add a selected show when the user has selected it', () => {
+            const username = 'foo';
+            const item = {
+                username: username,
+                showId: 'show-z'
+            };
+            return SelectedShowsRepository.addSelectedShow(item)
+                .should.eventually.match(true)
+                .then(() => {
+                    return SelectedShowsRepository.listSelectedShows(username)
+                        .should.eventually.be.theEqualSetOf([item]);
+                });
+        });
+
     });
 
-    it('should return an empty array when user has not selected any shows', () => {
-        const username = 'nobody';
-        return SelectedShowsRepository.listSelectedShows(username)
-            .should.eventually.be.theEqualSetOf([]);
+    describe('unselecting a show', () => {
+
+        const username = 'foo';
+        const item = {
+            username: username,
+            showId: 'show-z'
+        };
+
+        beforeEach(() => {
+            return SelectedShowsRepository.addSelectedShow(item);
+        })
+
+        it('should delete a selected show when the user unselects it', () => {
+            return SelectedShowsRepository.deleteSelectedShow(username, showId)
+                .should.eventually.match(item);
+        })
     })
 
 
