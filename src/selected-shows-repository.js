@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk')
+const Promise = require('bluebird');
+
 module.exports = function(options) {
 
     AWS.config.update({
@@ -10,7 +12,8 @@ module.exports = function(options) {
 
     return {
         listSelectedShows: listSelectedShows,
-        addSelectedShow: addSelectedShow
+        addSelectedShow: addSelectedShow,
+        deleteSelectedShow: deleteSelectedShow
     }
 
     function listSelectedShows(username) {
@@ -30,18 +33,33 @@ module.exports = function(options) {
         
     }
 
-    function addSelectedShow(show) {
+    function addSelectedShow(username, showId) {
         var params = {
             TableName: tableName,
             Item: {
-                "username": show.username,
-                "showId": show.showId
+                "username": username,
+                "showId": showId
             }
-        }
+        };
 
         return docClient.put(params).promise()
             .then((data) => {
                 return true;
+            });
+    }
+
+    function deleteSelectedShow(username, showId) {
+        var params = {
+            TableName: tableName,
+            Key: {
+                username: username,
+                showId: showId
+            }
+        };
+
+        return docClient.delete(params).promise()
+            .then(() => {
+                return {showId: showId};
             });
     }
 

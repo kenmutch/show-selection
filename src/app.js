@@ -1,29 +1,42 @@
 const express = require('express');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-const authParser  = require('./aws-apigw-cognito-user-auth-parser');
+const bodyParser = require('body-parser');
+const authParser = require('./aws-apigw-cognito-user-auth-parser');
 const _get = require('lodash.get');
 const app = express();
+const Promise = require('bluebird');
+const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(authParser());
-app.use(awsServerlessExpressMiddleware.eventContext())
 
 app.get('/selected-shows', (req, res) => {
-  res.send({
-    "Output": "Hello " + _get(req, 'authContext.claims.username', 'anonymous'),
-    "ApiGwEvent": _get(req, 'apiGateway.event', 'no gateway event found')
-  });
+    const username = _get(req, 'authContext.claims.username', 'anonymous');
+    SelectedShowsRepository.listSelectedShows(username)
+        .then((selectedShows) => {
+            res.send({
+                selectedShows: selectedShows
+            });
+        });
 });
 
 app.post('/selected-shows', (req, res) => {
-  res.send({
-    "Output": "Hello World!"
-  });
+    const username = _get(req, 'authContext.claims.username', 'anonymous');
+    SelectedShowsRepository.addSelectedShow(username, req.body.showId)
+        .then(() => {
+            res.status(204).send('');
+        });
 });
 
-app.delete('/selected-shows/:id', (req, res) => {
-  res.send({
-    "Output": "This will delete selected show with id of " + req.params.id
-  })
+app.delete('/selected-shows/:showId', (req, res) => {
+    const username = _get(req, 'authContext.claims.username', 'anonymous');
+    SelectedShowsRepository.deleteSelectedShow(username, req.params.showId)
+        .then((unselectedShow) => {
+            console.log('response', unselectedShow);
+            res.status(200).send({
+                unselectedShow: unselectedShow
+            });
+        })
 })
 
 

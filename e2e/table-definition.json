@@ -23,7 +23,7 @@
         "ReadCapacityUnits": 5,
         "WriteCapacityUnits": 1
     },
-    "TableName": "ShowSelections",
+    "TableName": "ShowSelectionsLocal",
     "StreamSpecification": {
         "StreamEnabled": false
     }

@@ -8,7 +8,7 @@ module.exports = function(options) {
             next();
         }
         catch(e) {
-            console.error()
+            console.error(e)
             next();
         }
     }
