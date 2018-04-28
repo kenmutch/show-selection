@@ -141,3 +141,5 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 1
+Outputs:
+  IntegrationUri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
