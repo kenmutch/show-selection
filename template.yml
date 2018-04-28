@@ -34,7 +34,7 @@ Resources:
                   default:
                     statusCode: '200'
                 uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                  Fn::Sub: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: GET
                 type: http
@@ -59,7 +59,7 @@ Resources:
                   default:
                     statusCode: '204'
                 uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                  Fn::Sub: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: http
@@ -83,7 +83,7 @@ Resources:
                 requestParameters:
                   integration.request.path.id: method.request.path.showId
                 uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                  Fn::Sub: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: DELETE
                 type: http
