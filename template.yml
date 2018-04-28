@@ -33,14 +33,7 @@ Resources:
                 responses:
                   default:
                     statusCode: '200'
-                uri: 
-                  !Join: 
-                    -''
-                    - -'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt ['ShowSelectionService', 'Arn']
-                      - '/invocations'
+                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: GET
                 type: http
@@ -64,14 +57,7 @@ Resources:
                 responses:
                   default:
                     statusCode: '204'
-                uri: 
-                  !Join: 
-                    -''
-                    - -'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt ['ShowSelectionService', 'Arn']
-                      - '/invocations'
+                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: http
@@ -94,14 +80,7 @@ Resources:
                     statusCode: '200'
                 requestParameters:
                   integration.request.path.id: method.request.path.showId
-                uri: 
-                  !Join: 
-                    -''
-                    - -'arn:aws:apigateway:'
-                      - !Ref 'AWS::Region'
-                      - ':lambda:path/2015-03-31/functions/'
-                      - !GetAtt ['ShowSelectionService', 'Arn']
-                      - '/invocations'
+                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: DELETE
                 type: http
