@@ -33,7 +33,8 @@ Resources:
                 responses:
                   default:
                     statusCode: '200'
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: GET
                 type: http
@@ -57,7 +58,8 @@ Resources:
                 responses:
                   default:
                     statusCode: '204'
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: http
@@ -80,7 +82,8 @@ Resources:
                     statusCode: '200'
                 requestParameters:
                   integration.request.path.id: method.request.path.showId
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: DELETE
                 type: http
@@ -141,5 +144,3 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 1
-Outputs:
-  IntegrationUri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
