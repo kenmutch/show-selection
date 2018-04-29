@@ -35,7 +35,7 @@ Resources:
                 uri: 
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
-                httpMethod: GET
+                httpMethod: POST
                 type: aws
             post:
               summary: Select a show
@@ -82,7 +82,7 @@ Resources:
                 uri: 
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
-                httpMethod: DELETE
+                httpMethod: POST
                 type: aws
         securityDefinitions:
           CatchupCatchaUserPool:
