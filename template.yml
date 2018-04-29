@@ -36,7 +36,7 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
-                type: aws
+                type: aws_proxy
             post:
               summary: Select a show
               consumes:
@@ -60,7 +60,7 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
-                type: aws
+                type: aws_proxy
           /selected-shows/{showId}:
             delete:
               parameters:
@@ -83,7 +83,7 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
-                type: aws
+                type: aws_proxy
         securityDefinitions:
           CatchupCatchaUserPool:
             type: apiKey
