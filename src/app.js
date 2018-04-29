@@ -21,7 +21,9 @@ app.get('/selected-shows', (req, res) => {
 });
 
 app.post('/selected-shows', (req, res) => {
+    console.log('req.body', req.body);
     const username = _get(req, 'authContext.claims.username', 'anonymous');
+    const showId = req.body.showId;
     console.log('about to add a selected show: username:' + username + ', showId:' + showId);
     SelectedShowsRepository.addSelectedShow(username, showId)
         .then(() => {
