@@ -22,7 +22,8 @@ app.get('/selected-shows', (req, res) => {
 
 app.post('/selected-shows', (req, res) => {
     const username = _get(req, 'authContext.claims.username', 'anonymous');
-    SelectedShowsRepository.addSelectedShow(username, req.body.showId)
+    console.log('about to add a selected show: username:' + username + ', showId:' + showId);
+    SelectedShowsRepository.addSelectedShow(username, showId)
         .then(() => {
             res.status(204).send('');
         });
@@ -31,10 +32,9 @@ app.post('/selected-shows', (req, res) => {
 app.delete('/selected-shows/:showId', (req, res) => {
     const username = _get(req, 'authContext.claims.username', 'anonymous');
     const showId = req.params.showId;
-    console.log('about to add a selected show: username:' + username + ', showId:' + showId);
-    SelectedShowsRepository.deleteSelectedShow(username, req.params.showId)
+    console.log('about to delete a selected show: username:' + username + ', showId:' + showId);
+    SelectedShowsRepository.deleteSelectedShow(username, showId)
         .then((unselectedShow) => {
-            console.log('response', unselectedShow);
             res.status(200).send({
                 unselectedShow: unselectedShow
             });
