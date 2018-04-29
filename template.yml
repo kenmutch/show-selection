@@ -21,22 +21,22 @@ Resources:
         schemes:
           - https
         paths:
-          '/selected-shows':
+          /selected-shows:
             get:
               responses:
                 '200':
                   description: 200 response
               security: 
-                - CatchupCatchaUserPool: 
-                  - com.catchup-catcha/shows.selected
+                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
               x-amazon-apigateway-integration:
                 responses:
                   default:
                     statusCode: '200'
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: GET
-                type: http
+                type: aws
             post:
               summary: Select a show
               consumes:
@@ -51,17 +51,17 @@ Resources:
                 '204':
                   description: 204 response
               security: 
-                - CatchupCatchaUserPool: 
-                  - com.catchup-catcha/shows.selected
+                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
               x-amazon-apigateway-integration:
                 responses:
                   default:
                     statusCode: '204'
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
-                type: http
-          '/selected-shows/{showId}':
+                type: aws
+          /selected-shows/{showId}:
             delete:
               parameters:
                 - name: showId
@@ -72,18 +72,18 @@ Resources:
                 '200':
                   description: 200 response
               security: 
-                - CatchupCatchaUserPool: 
-                  - com.catchup-catcha/shows.selected
+                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
               x-amazon-apigateway-integration:
                 responses:
                   default:
                     statusCode: '200'
                 requestParameters:
                   integration.request.path.id: method.request.path.showId
-                uri: arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:828944938596:function:catchup-index-dev-list-episodes/invocations
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: DELETE
-                type: http
+                type: aws
         securityDefinitions:
           CatchupCatchaUserPool:
             type: apiKey
@@ -112,19 +112,22 @@ Resources:
           Properties:
             Path: /selected-shows
             Method: get
-            RestApiId: !Ref ShowSelectionsApi
+            RestApiId: 
+              Ref: ShowSelectionsApi
         PostEvent:
           Type: Api
           Properties:
             Path: /selected-shows
             Method: post
-            RestApiId: !Ref ShowSelectionsApi
+            RestApiId: !
+              Ref: ShowSelectionsApi
         DeleteEvent:
           Type: Api
           Properties:
             Path: /selected-shows/{id}
             Method: delete
-            RestApiId: !Ref ShowSelectionsApi
+            RestApiId: 
+              Ref: ShowSelectionsApi
   ShowSelectionsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
