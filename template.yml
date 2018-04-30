@@ -61,7 +61,7 @@ Resources:
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
-          /selected-shows/{showId}:
+          '/selected-shows/{showId}':
             delete:
               parameters:
                 - name: showId
@@ -103,9 +103,10 @@ Resources:
         Variables:
           NODE_ENV: production
           TABLE_NAME: !Ref ShowSelectionsTable
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Policies: AmazonDynamoDBFullAccess
+      # Role:
+      #   Fn::ImportValue:
+      #     !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Events:
         GetEvent:
           Type: Api
