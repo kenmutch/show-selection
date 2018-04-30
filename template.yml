@@ -120,7 +120,7 @@ Resources:
           Properties:
             Path: /selected-shows
             Method: post
-            RestApiId: !
+            RestApiId:
               Ref: ShowSelectionsApi
         DeleteEvent:
           Type: Api
