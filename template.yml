@@ -125,7 +125,7 @@ Resources:
         DeleteEvent:
           Type: Api
           Properties:
-            Path: /selected-shows/{id}
+            Path: /selected-shows/{showId}
             Method: delete
             RestApiId: 
               Ref: ShowSelectionsApi
