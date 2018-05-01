@@ -5,7 +5,9 @@ const _get = require('lodash.get');
 const app = express();
 const Promise = require('bluebird');
 const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
+const AWSXRay = require('aws-xray-sdk');
 
+app.use(AWSXRay.express.openSegment('ShowSelectionService'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(authParser());
@@ -43,6 +45,7 @@ app.delete('/selected-shows/:showId', (req, res) => {
         })
 })
 
+app.use(AWSXRay.express.closeSegment());
 
 // Export your Express configuration so that it can be consumed by the Lambda handler
 module.exports = app

@@ -99,6 +99,7 @@ Resources:
     Properties:
       Handler: src/index.handler
       Runtime: nodejs8.10
+      Timeout: 15
       Environment:
         Variables:
           NODE_ENV: production
