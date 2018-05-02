@@ -100,11 +100,15 @@ Resources:
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
+      TracingConfig:
+        Mode: Active
       Environment:
         Variables:
           NODE_ENV: production
           TABLE_NAME: !Ref ShowSelectionsTable
-      Policies: AmazonDynamoDBFullAccess
+      Policies: 
+        - AmazonDynamoDBFullAccess
+        - AWSXrayWriteOnlyAccess
       # Role:
       #   Fn::ImportValue:
       #     !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
