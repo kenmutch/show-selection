@@ -8,6 +8,11 @@ Parameters:
     Type: String
     Description: AWS CodeStar projectID used to associate new resources to team members
 
+Outputs:
+  ShowSelectionsApi:
+    Type: String
+    Description: The API endpoint
+
 Resources:
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
@@ -100,8 +105,7 @@ Resources:
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
-      TracingConfig:
-        Mode: Active
+      Tracing: Active
       Environment:
         Variables:
           NODE_ENV: production
