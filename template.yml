@@ -10,8 +10,8 @@ Parameters:
 
 Outputs:
   ShowSelectionsApi:
-    Type: String
     Description: The API endpoint
+    Value: !Ref ShowSelectionsApi
 
 Resources:
   ShowSelectionsApi:
