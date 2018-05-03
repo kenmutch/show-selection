@@ -9,6 +9,6 @@ CONTAINER_NAME=dynamodb-local
 
 if ! docker ps | grep -q $CONTAINER_NAME; then
     echo "container '$CONTAINER_NAME' is not running, so starting it"
-    docker run -d -p 8000:8000 --name $CONTAINER_NAME dmwkerr/dynamodb
+    docker start $CONTAINER_NAME
 fi
 ./node_modules/.bin/mocha --recursive e2e
