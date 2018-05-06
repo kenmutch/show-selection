@@ -9,14 +9,11 @@ AWS.config.update({
     region: process.env.REGION
 });
 
-if(process.env.DYNAMODB_ENDPOINT) {
-    AWS.config.update({
-        endpoint: process.env.DYNAMODB_ENDPOINT
-    });
-}
-
 AWS.config.setPromisesDependency(Promise);
-const DB = new AWS.DynamoDB({apiVersion: '2012-10-08'});
+const DB = new AWS.DynamoDB({
+    apiVersion: '2012-10-08',
+    endpoint: process.env.DYNAMODB_ENDPOINT
+});
 
 should.Assertion.add('theEqualSetOf', function (other) {   //must use 'function' here, as '=>' changes the meaning of 'this'
     this.params = {operation: 'should contain the same items'}
