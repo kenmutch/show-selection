@@ -12,6 +12,7 @@ Outputs:
   ShowSelectionsApi:
     Description: The API endpoint
     Value: !Ref ShowSelectionsApi
+  
 
 Resources:
   ShowSelectionsApi:
@@ -110,12 +111,11 @@ Resources:
         Variables:
           NODE_ENV: production
           TABLE_NAME: !Ref ShowSelectionsTable
+          SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
       Policies: 
         - AmazonDynamoDBFullAccess
         - AWSXrayWriteOnlyAccess
-      # Role:
-      #   Fn::ImportValue:
-      #     !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+        - AmazonSNSFullAccess
       Events:
         GetEvent:
           Type: Api
@@ -154,3 +154,8 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 1
+  ShowSelectedEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: show-selected-events
+      TopicName: show-selected-events

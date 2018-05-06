@@ -6,6 +6,8 @@ const app = express();
 const Promise = require('bluebird');
 const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
 const AWSXRay = require('aws-xray-sdk');
+const EventBus = new (require('events')).EventEmitter();
+const SnsClient = require('./sns-client')(EventBus, snsClientOptions());
 
 app.use(AWSXRay.express.openSegment('ShowSelectionService'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -29,6 +31,8 @@ app.post('/selected-shows', (req, res) => {
     console.log('about to add a selected show: username:' + username + ', showId:' + showId);
     SelectedShowsRepository.addSelectedShow(username, showId)
         .then(() => {
+            const eventData = {showId: showId};
+            EventBus.emit('show.selected', {showId: showId});
             res.status(204).send('');
         });
 });
@@ -47,5 +51,12 @@ app.delete('/selected-shows/:showId', (req, res) => {
 
 app.use(AWSXRay.express.closeSegment());
 
-// Export your Express configuration so that it can be consumed by the Lambda handler
+function snsClientOptions() {
+    return {
+        showSelectionEventsTopicArn: process.env.SHOW_SELECTED_EVENTS_TOPIC_ARN,
+        region: process.env.REGION,
+        endpoint: process.env.SNS_ENDPOINT
+    };
+}
+
 module.exports = app
