@@ -44,7 +44,7 @@ app.delete('/selected-shows/:showId', (req, res) => {
     console.log('about to delete a selected show: username:' + username + ', showId:' + showId);
     SelectedShowsRepository.deleteSelectedShow(username, showId)
         .then((unselectedShow) => {
-            return NotificationService.notifyShowSelected(unselectedShow)
+            return NotificationService.notifyShowUnselected(unselectedShow)
                 .then(() => {
                     res.status(200).send({
                         unselectedShow: unselectedShow
