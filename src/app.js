@@ -6,8 +6,7 @@ const app = express();
 const Promise = require('bluebird');
 const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
 const AWSXRay = require('aws-xray-sdk');
-const EventBus = new (require('events')).EventEmitter();
-const SnsClient = require('./sns-client')(EventBus, snsClientOptions());
+const NotificationService = require('./notification-service')(notificationServiceOptions());
 
 app.use(AWSXRay.express.openSegment('ShowSelectionService'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -32,7 +31,9 @@ app.post('/selected-shows', (req, res) => {
     SelectedShowsRepository.addSelectedShow(username, showId)
         .then(() => {
             const eventData = {showId: showId};
-            EventBus.emit('show.selected', {showId: showId});
+            return NotificationService.notifyShowSelected(eventData);
+        })
+        .then(() => {
             res.status(204).send('');
         });
 });
@@ -51,7 +52,7 @@ app.delete('/selected-shows/:showId', (req, res) => {
 
 app.use(AWSXRay.express.closeSegment());
 
-function snsClientOptions() {
+function notificationServiceOptions() {
     return {
         showSelectionEventsTopicArn: process.env.SHOW_SELECTED_EVENTS_TOPIC_ARN,
         region: process.env.REGION,
