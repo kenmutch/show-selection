@@ -8,6 +8,7 @@
     "aws-xray-sdk": "^1.2.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
+    "bunyan": "^1.8.12",
     "express": "4.16.2",
     "lodash.get": "^4.4.2",
     "urldecode": "^1.0.1"

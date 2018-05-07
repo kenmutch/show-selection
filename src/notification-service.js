@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk')
 const Promise = require('bluebird');
+const logger = require('../bunyan-log-provider').getLogger();
 
 module.exports = function(options){
 
@@ -12,11 +13,11 @@ module.exports = function(options){
 
     return {
         notifyShowSelected: (event) => {
-            console.log('A show was selected: ' + JSON.stringify(event));
+            logger.info('A show was selected: ' + JSON.stringify(event));
             return publish(options.showSelectionEventsTopicArn, event);
         },
         notifyShowUnselected: (event) => {
-            console.log('A show was unselected: ' + JSON.stringify(event));
+            logger.info('A show was unselected: ' + JSON.stringify(event));
             return publish(options.showUnselectionEventsTopicArn, event);
         }
     }
@@ -28,17 +29,17 @@ module.exports = function(options){
             TopicArn: snsTopicArn
         }).promise()
         .then((data) => {
-            console.log(`published message of '${message}' to ${snsTopicArn} and the response was ${JSON.stringify(data)}`);
+            logger.info(`published message of '${message}' to ${snsTopicArn} and the response was ${JSON.stringify(data)}`);
         })
         .catch((err) => {
-            console.error(`error publishing message of '${message}' to ${snsTopicArn}`, err);
+            logger.info(`error publishing message of '${message}' to ${snsTopicArn}`, err);
             throw err;
         })
     }
 }
 
 function createSnsClient(options) {
-    console.log(`Creating sns client with endpoint of ${options.endpoint}`);
+    logger.debug(`Creating sns client with endpoint of ${options.endpoint}`);
     if(options.endpoint) {
         return new AWS.SNS({
             apiVersion: '2012-08-10',

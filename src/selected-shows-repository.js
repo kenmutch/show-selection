@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk')
 const Promise = require('bluebird');
+const logger = require('../bunyan-log-provider').getLogger();
 
 module.exports = function(options) {
 
@@ -33,7 +34,6 @@ module.exports = function(options) {
             .then((data) => {
                 return data.Items;
             });
-        
     }
 
     function addSelectedShow(username, showId) {
