@@ -7,6 +7,7 @@ export AWS_SECRET_ACCESSKEY=$(grep -i "aws_secret_access_key" ~/.aws/credentials
 export REGION='ap-southeast-2'
 export TABLE_NAME='ShowSelectionsLocal'
 export SHOW_SELECTED_EVENTS_TOPIC_ARN='arn:aws:sns:us-east-1:123456789012:show-selected-events'
+export SHOW_UNSELECTED_EVENTS_TOPIC_ARN='arn:aws:sns:us-east-1:123456789012:show-unselected-events'
 DYNAMODB_CONTAINER='dynamodb-local'
 SNS_CONTAINER='snssqs-mock'
 

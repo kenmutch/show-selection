@@ -112,6 +112,7 @@ Resources:
           NODE_ENV: production
           TABLE_NAME: !Ref ShowSelectionsTable
           SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
+          SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
       Policies: 
         - AmazonDynamoDBFullAccess
         - AWSXrayWriteOnlyAccess
@@ -159,3 +160,8 @@ Resources:
     Properties:
       DisplayName: show-selected-events
       TopicName: show-selected-events
+  ShowUnselectedEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: show-unselected-events
+      TopicName: show-unselected-events

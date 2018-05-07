@@ -44,17 +44,21 @@ app.delete('/selected-shows/:showId', (req, res) => {
     console.log('about to delete a selected show: username:' + username + ', showId:' + showId);
     SelectedShowsRepository.deleteSelectedShow(username, showId)
         .then((unselectedShow) => {
-            res.status(200).send({
-                unselectedShow: unselectedShow
-            });
-        })
-})
+            return NotificationService.notifyShowSelected(unselectedShow)
+                .then(() => {
+                    res.status(200).send({
+                        unselectedShow: unselectedShow
+                    });
+                });
+        });
+});
 
 app.use(AWSXRay.express.closeSegment());
 
 function notificationServiceOptions() {
     return {
         showSelectionEventsTopicArn: process.env.SHOW_SELECTED_EVENTS_TOPIC_ARN,
+        showUnselectionEventsTopicArn: process.env.SHOW_UNSELECTED_EVENTS_TOPIC_ARN,
         region: process.env.REGION,
         endpoint: process.env.SNS_ENDPOINT
     };

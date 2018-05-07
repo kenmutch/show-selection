@@ -14,6 +14,10 @@ module.exports = function(options){
         notifyShowSelected: (event) => {
             console.log('A show was selected: ' + JSON.stringify(event));
             return publish(options.showSelectionEventsTopicArn, event);
+        },
+        notifyShowUnselected: (event) => {
+            console.log('A show was unselected: ' + JSON.stringify(event));
+            return publish(options.showUnselectionEventsTopicArn, event);
         }
     }
 
