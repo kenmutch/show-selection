@@ -3,15 +3,14 @@ const Promise = require('bluebird');
 const logger = require('./bunyan-log-provider').getLogger();
 
 module.exports = function(options) {
+    options = options || {};
 
     AWS.config.update({
-        region: ((options && options.region) ? options.region: 'ap-southeast-2')
+        region: options.region ? options.region: 'ap-southeast-2'
     });
     AWS.config.setPromisesDependency(Promise);
-    const docClient = new AWS.DynamoDB.DocumentClient({
-        apiVersion: '2012-08-10',
-        endpoint: process.env.DYNAMODB_ENDPOINT
-    });
+    
+    const docClient = createDocClient(options);
     const tableName = options.tableName;
 
     return {
@@ -65,4 +64,18 @@ module.exports = function(options) {
                 return {showId: showId};
             });
     }
+}
+
+function createDocClient(options) {
+    if (options.endpoint) {
+        return new AWS.DynamoDB.DocumentClient({
+            apiVersion: '2012-08-10',
+            endpoint: options.endpoint
+        });
+    }
+    else {
+        return new AWS.DynamoDB.DocumentClient({
+            apiVersion: '2012-08-10'
+        });
+    };
 }

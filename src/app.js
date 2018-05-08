@@ -1,13 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const authParser = require('./aws-apigw-cognito-user-auth-parser');
 const _get = require('lodash.get');
-const app = express();
 const Promise = require('bluebird');
-const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
 const AWSXRay = require('aws-xray-sdk');
-const NotificationService = require('./notification-service')(notificationServiceOptions());
-const logger = require('./bunyan-log-provider').getLogger();
+
+const config = require('./config');
+const logger = require('./bunyan-log-provider').getLogger(bunyanLogProviderOptions(config));
+const authParser = require('./aws-apigw-cognito-user-auth-parser');
+const SelectedShowsRepository = require('./selected-shows-repository')(selectedShowRepositoryOptions(config))
+const NotificationService = require('./notification-service')(notificationServiceOptions(config));
+
+const app = express();
 
 app.use(AWSXRay.express.openSegment('ShowSelectionService'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -55,13 +58,28 @@ app.delete('/selected-shows/:showId', (req, res) => {
 
 app.use(AWSXRay.express.closeSegment());
 
-function notificationServiceOptions() {
+
+function bunyanLogProviderOptions(config) {
     return {
-        showSelectionEventsTopicArn: process.env.SHOW_SELECTED_EVENTS_TOPIC_ARN,
-        showUnselectionEventsTopicArn: process.env.SHOW_UNSELECTED_EVENTS_TOPIC_ARN,
-        region: process.env.REGION,
-        endpoint: process.env.SNS_ENDPOINT
+        logLevel: config.logLevel,
+        name: config.appName
     };
+}
+function notificationServiceOptions(config) {
+    return {
+        showSelectionEventsTopicArn: config.sns.showSelectionEventsTopicArn,
+        showUnselectionEventsTopicArn: config.sns.showUnselectionEventsTopicArn,
+        region: config.region,
+        endpoint: config.sns.endpoint
+    };
+}
+
+function selectedShowRepositoryOptions(config) {
+    return {
+        region: config.region,
+        tableName: config.dynamodb.tableName,
+        endpoint: config.dynamodb.endpoint
+    }
 }
 
 module.exports = app

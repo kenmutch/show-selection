@@ -8,10 +8,12 @@ var rootLogName;
 var logInstance;
 
 
-function _getLogger(name) {
+function _getLogger(options) {
 
-    rootLogName = process.env.APP_NAME? process.env.APP_NAME: 'no-app-name';
-    name = !!name ? name : rootLogName;
+    options = options || {}
+
+    const name = options.name || 'no-app-name';
+    const logLevel = options.logLevel || 'info';
 
     if (!logInstance || null === logInstance) {
 
