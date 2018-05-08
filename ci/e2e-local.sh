@@ -1,9 +1,11 @@
 #!/bin/bash
-
-export DYNAMODB_ENDPOINT='http://localhost:8000'
-export SNS_ENDPOINT='http://localhost:9325'
+# local test only
 export AWS_ACCESS_KEY_ID=$(grep -i "aws_access_key_id" ~/.aws/credentials | cut -d "=" -f 2)
 export AWS_SECRET_ACCESSKEY=$(grep -i "aws_secret_access_key" ~/.aws/credentials | cut -d "=" -f 2)
+export DYNAMODB_ENDPOINT='http://localhost:8000'
+export SNS_ENDPOINT='http://localhost:9325'
+
+# all env
 export REGION='ap-southeast-2'
 export TABLE_NAME='ShowSelectionsLocal'
 export SHOW_SELECTED_EVENTS_TOPIC_ARN='arn:aws:sns:us-east-1:123456789012:show-selected-events'

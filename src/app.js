@@ -67,7 +67,7 @@ function bunyanLogProviderOptions(config) {
 }
 function notificationServiceOptions(config) {
     return {
-        showSelectionEventsTopicArn: config.sns.showSelectionEventsTopicArn,
+        showSelectionEventsTopicArn: config.sns.showSelectedEventsTopicArn,
         showUnselectionEventsTopicArn: config.sns.showUnselectionEventsTopicArn,
         region: config.region,
         endpoint: config.sns.endpoint
