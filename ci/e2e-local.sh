@@ -8,7 +8,12 @@ export REGION='ap-southeast-2'
 export TABLE_NAME='ShowSelectionsLocal'
 export SHOW_SELECTED_EVENTS_TOPIC_ARN='arn:aws:sns:us-east-1:123456789012:show-selected-events'
 export SHOW_UNSELECTED_EVENTS_TOPIC_ARN='arn:aws:sns:us-east-1:123456789012:show-unselected-events'
-export LOG_LEVEL='DEBUG'
+export LOG_LEVEL=debug
+
+if [[ ! -z $1 ]]; then
+    export LOG_LEVEL=$1
+fi
+
 export APP_NAME='show-selection-service'
 
 DYNAMODB_CONTAINER='dynamodb-local'
