@@ -7,7 +7,7 @@ const Promise = require('bluebird');
 const SelectedShowsRepository = require('./selected-shows-repository')({ tableName: process.env.TABLE_NAME })
 const AWSXRay = require('aws-xray-sdk');
 const NotificationService = require('./notification-service')(notificationServiceOptions());
-const logger = require('../bunyan-log-provider').getLogger();
+const logger = require('./bunyan-log-provider').getLogger();
 
 app.use(AWSXRay.express.openSegment('ShowSelectionService'));
 app.use(bodyParser.urlencoded({extended: true}));

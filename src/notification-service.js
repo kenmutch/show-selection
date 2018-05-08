@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 const Promise = require('bluebird');
-const logger = require('../bunyan-log-provider').getLogger();
+const logger = require('./bunyan-log-provider').getLogger();
 
 module.exports = function(options){
 
