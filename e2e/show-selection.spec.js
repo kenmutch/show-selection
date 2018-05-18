@@ -31,10 +31,10 @@ describe('Show Selection API Specs', () => {
     const tableName = process.env.TABLE_NAME;
 
     const SelectedShowsRepository = require('../src/selected-shows-repository')({tableName});
-    const tableDefinition = JSON.parse(loadFromTemplate(
+    const tableDefinition = loadFromTemplate(
         path.resolve(__dirname, 'table-definition.json'), 
         {tableName:tableName}
-    ));
+    );
   
     const items = require('./table-items.json');
 
@@ -207,5 +207,5 @@ describe('Show Selection API Specs', () => {
 function loadFromTemplate(path, params) {
     console.log('cwd', process.cwd());
     const template = JsonTemplateParser(fse.readFileSync(path, {encoding:'utf8'}));
-    return template(params);
+    return JSON.parse(template(params));
 }
