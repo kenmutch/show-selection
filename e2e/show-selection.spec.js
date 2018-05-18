@@ -35,8 +35,7 @@ describe('Show Selection API Specs', () => {
         path.resolve(__dirname, 'table-definition.json'), 
         {tableName:tableName}
     ));
-    console.log(typeof tableDefinition);
-    console.log('tableDefinition', tableDefinition);
+  
     const items = require('./table-items.json');
 
     before(() => {
