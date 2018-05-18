@@ -2,6 +2,9 @@ const AWS = require('aws-sdk');
 const Promise = require('bluebird');
 const should = require('should');
 const supertest = require('supertest'); 
+const fse = require('fs-extra');
+const path = require('path')
+const JsonTemplateParser = require('json-templates');
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
@@ -28,7 +31,12 @@ describe('Show Selection API Specs', () => {
     const tableName = process.env.TABLE_NAME;
 
     const SelectedShowsRepository = require('../src/selected-shows-repository')({tableName});
-    const tableDefinition = require('./table-definition.json');
+    const tableDefinition = JSON.parse(loadFromTemplate(
+        path.resolve(__dirname, 'table-definition.json'), 
+        {tableName:tableName}
+    ));
+    console.log(typeof tableDefinition);
+    console.log('tableDefinition', tableDefinition);
     const items = require('./table-items.json');
 
     before(() => {
@@ -196,3 +204,9 @@ describe('Show Selection API Specs', () => {
             });
     }
 });
+
+function loadFromTemplate(path, params) {
+    console.log('cwd', process.cwd());
+    const template = JsonTemplateParser(fse.readFileSync(path, {encoding:'utf8'}));
+    return template(params);
+}
