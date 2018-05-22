@@ -10,27 +10,23 @@ Parameters:
 
 Outputs:
   ShowSelectionsApi:
-    Logical ID:
-      Description: The API endpoint
-      Value: !Ref ShowSelectionsApi
+    Description: The API endpoint
+    Value: !Ref ShowSelectionsApi
   ShowSelectionsTableName:
-    Logical ID:
-      Description: The show selections table name
-      Value: !Ref ShowSelectionsTable
-      Export:
-        Name: ShowSelectionsTable-export
+    Description: The show selections table name
+    Value: !Ref ShowSelectionsTable
+    Export:
+      Name: ShowSelectionsTable-export
   ShowSelectedEventsTopic:
-    Logical ID:
-      Description: The show selected events topic
-      Value: !Ref ShowSelectedEventsTopic
-      Export:
-        Name: ShowSelectedEventsTopic-export
+    Description: The show selected events topic
+    Value: !Ref ShowSelectedEventsTopic
+    Export:
+      Name: ShowSelectedEventsTopic-export
   ShowUnselectedEventsTopic:
-    Logical ID:
-      Description: The show unselected events topic
-      Value: !Ref ShowUnselectedEventsTopic
-      Export:
-        Name: ShowUnselectedEventsTopic-export
+    Description: The show unselected events topic
+    Value: !Ref ShowUnselectedEventsTopic
+    Export:
+      Name: ShowUnselectedEventsTopic-export
   
 
 Resources:
