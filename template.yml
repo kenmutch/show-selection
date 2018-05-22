@@ -9,8 +9,8 @@ Parameters:
     Description: AWS CodeStar projectID used to associate new resources to team members
 
 Outputs:
-  Logical ID:
-    ShowSelectionsApi:
+  ShowSelectionsApi:
+    Logical ID:
       Description: The API endpoint
       Value: !Ref ShowSelectionsApi
   ShowSelectionsTableName:
