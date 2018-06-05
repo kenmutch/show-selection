@@ -60,8 +60,8 @@ describe('Show Selection API Specs', () => {
                         "username": {
                             S: item.username                    
                         },
-                        "showId": {
-                            S: item.showId
+                        "showSlug": {
+                            S: item.showSlug
                         }
                     },
                     TableName: tableDefinition.TableName
@@ -102,14 +102,14 @@ describe('Show Selection API Specs', () => {
 
         it('should add a selected show when the user has selected it', () => {
             const username = 'foo';
-            const showId = 'show-z';
+            const showSlug = 'show-z';
             const item = {
                 username: username,
-                showId: showId
+                showSlug: showSlug
             };
             return request
                 .post('/selected-shows')
-                .send({showId: showId})
+                .send({showSlug: showSlug})
                 .set('x-apigateway-event', utils.generateCognitoHeader(username))
                 .set('Content-Type', 'application/json')
                 .expect(204)
@@ -130,10 +130,10 @@ describe('Show Selection API Specs', () => {
     describe('unselecting a show', () => {
 
         const username = 'foo';
-        const showId = 'show-z'
+        const showSlug = 'show-z'
         const item = {
             username: username,
-            showId: showId
+            showSlug: showSlug
         };
 
         beforeEach(() => {
@@ -144,8 +144,8 @@ describe('Show Selection API Specs', () => {
                         "username": {
                             S: item.username                    
                         },
-                        "showId": {
-                            S: item.showId
+                        "showSlug": {
+                            S: item.showSlug
                         }
                     },
                     TableName: tableDefinition.TableName
@@ -156,7 +156,7 @@ describe('Show Selection API Specs', () => {
         it('should delete a selected show when the user unselects it', () => {
             const unselectedItem = items[0];
             return request
-                .delete('/selected-shows/' + unselectedItem.showId)
+                .delete('/selected-shows/' + unselectedItem.showSlug)
                 .set('x-apigateway-event', utils.generateCognitoHeader(username))
                 .expect(200)
                 .then(() => {
@@ -173,13 +173,13 @@ describe('Show Selection API Specs', () => {
         it('should return the unselected show after deleting it', () => {
             const showThatWasUnselected = items[0];
             return request
-                .delete('/selected-shows/' + showThatWasUnselected.showId)
+                .delete('/selected-shows/' + showThatWasUnselected.showSlug)
                 .set('x-apigateway-event', utils.generateCognitoHeader(username))
                 .expect(200)
                 .then((result) => {
                     console.log('result.body', result.body);
                     return result.body.unselectedShow
-                        .should.eql({showId: showThatWasUnselected.showId});
+                        .should.eql({showSlug: showThatWasUnselected.showSlug});
                 });
         })
     });
@@ -193,8 +193,8 @@ describe('Show Selection API Specs', () => {
                             "username": {
                                 S: item.username.S
                             },
-                            "showId": {
-                                S: item.showId.S
+                            "showSlug": {
+                                S: item.showSlug.S
                             }
                         },
                         TableName: tableDefinition.TableName

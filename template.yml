@@ -28,7 +28,6 @@ Outputs:
     Export:
       Name: ShowUnselectedEventsTopic-export
   
-
 Resources:
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
@@ -64,7 +63,7 @@ Resources:
                 - application/json
               parameters:
                 - in: body
-                  name: showId
+                  name: showSlug
                   description: The id of the show selected.
                   schema:
                     type: string
@@ -82,10 +81,10 @@ Resources:
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
-          '/selected-shows/{showId}':
+          '/selected-shows/{showSlug}':
             delete:
               parameters:
-                - name: showId
+                - name: showSlug
                   in: path
                   required: true
                   type: string
@@ -99,7 +98,7 @@ Resources:
                   default:
                     statusCode: '200'
                 requestParameters:
-                  integration.request.path.id: method.request.path.showId
+                  integration.request.path.id: method.request.path.showSlug
                 uri: 
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
                 passthroughBehavior: when_no_match
@@ -152,7 +151,7 @@ Resources:
         DeleteEvent:
           Type: Api
           Properties:
-            Path: /selected-shows/{showId}
+            Path: /selected-shows/{showSlug}
             Method: delete
             RestApiId: 
               Ref: ShowSelectionsApi
@@ -162,12 +161,12 @@ Resources:
       AttributeDefinitions: 
         - AttributeName: username
           AttributeType: S
-        - AttributeName: showId
+        - AttributeName: showSlug
           AttributeType: S
       KeySchema: 
         - AttributeName: username
           KeyType: HASH
-        - AttributeName: showId
+        - AttributeName: showSlug
           KeyType: RANGE
       ProvisionedThroughput: 
         ReadCapacityUnits: 5

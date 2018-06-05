@@ -29,11 +29,11 @@ app.get('/selected-shows', (req, res) => {
 
 app.post('/selected-shows', (req, res) => {
     const username = _get(req, 'authContext.claims.username', 'anonymous');
-    const showId = req.body.showId;
-    logger.debug('about to add a selected show: username:' + username + ', showId:' + showId);
-    SelectedShowsRepository.addSelectedShow(username, showId)
+    const showSlug = req.body.showSlug;
+    logger.debug('about to add a selected show: username:' + username + ', showSlug:' + showSlug);
+    SelectedShowsRepository.addSelectedShow(username, showSlug)
         .then(() => {
-            const eventData = {showId: showId};
+            const eventData = {showSlug: showSlug};
             return NotificationService.notifyShowSelected(eventData);
         })
         .then(() => {
@@ -41,11 +41,11 @@ app.post('/selected-shows', (req, res) => {
         });
 });
 
-app.delete('/selected-shows/:showId', (req, res) => {
+app.delete('/selected-shows/:showSlug', (req, res) => {
     const username = _get(req, 'authContext.claims.username', 'anonymous');
-    const showId = req.params.showId;
-    logger.debug('about to delete a selected show: username:' + username + ', showId:' + showId);
-    SelectedShowsRepository.deleteSelectedShow(username, showId)
+    const showSlug = req.params.showSlug;
+    logger.debug('about to delete a selected show: username:' + username + ', showSlug:' + showSlug);
+    SelectedShowsRepository.deleteSelectedShow(username, showSlug)
         .then((unselectedShow) => {
             return NotificationService.notifyShowUnselected(unselectedShow)
                 .then(() => {

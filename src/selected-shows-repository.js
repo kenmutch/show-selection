@@ -35,12 +35,12 @@ module.exports = function(options) {
             });
     }
 
-    function addSelectedShow(username, showId) {
+    function addSelectedShow(username, showSlug) {
         var params = {
             TableName: tableName,
             Item: {
                 "username": username,
-                "showId": showId
+                "showSlug": showSlug
             }
         };
 
@@ -50,18 +50,18 @@ module.exports = function(options) {
             });
     }
 
-    function deleteSelectedShow(username, showId) {
+    function deleteSelectedShow(username, showSlug) {
         var params = {
             TableName: tableName,
             Key: {
                 username: username,
-                showId: showId
+                showSlug: showSlug
             }
         };
 
         return docClient.delete(params).promise()
             .then(() => {
-                return {showId: showId};
+                return {showSlug: showSlug};
             });
     }
 }
