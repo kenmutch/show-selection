@@ -59,7 +59,7 @@ Resources:
                   description: 200 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
                   #- !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
               x-amazon-apigateway-integration:
                 responses:
@@ -85,7 +85,7 @@ Resources:
                   description: 204 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -107,7 +107,7 @@ Resources:
                   description: 200 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
               x-amazon-apigateway-integration:
                 responses:
                   default:
