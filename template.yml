@@ -7,6 +7,9 @@ Parameters:
   ProjectId:
     Type: String
     Description: AWS CodeStar projectID used to associate new resources to team members
+  Stage:
+    Type: String
+    Description: The Stage
 
 Outputs:
   ShowSelectionsApi:
@@ -16,17 +19,17 @@ Outputs:
     Description: The show selections table name
     Value: !Ref ShowSelectionsTable
     Export:
-      Name: ShowSelectionsTable-export
+      Name: !Sub 'ShowSelectionsTable-${Stage}-export'
   ShowSelectedEventsTopic:
     Description: The show selected events topic
     Value: !Ref ShowSelectedEventsTopic
     Export:
-      Name: ShowSelectedEventsTopic-export
+      Name: !Sub 'ShowSelectedEventsTopic-${Stage}-export'
   ShowUnselectedEventsTopic:
     Description: The show unselected events topic
     Value: !Ref ShowUnselectedEventsTopic
     Export:
-      Name: ShowUnselectedEventsTopic-export
+      Name: !Sub 'ShowUnselectedEventsTopic-${Stage}-export'
   
 Resources:
   ShowSelectionsApi:
@@ -47,7 +50,9 @@ Resources:
                 '200':
                   description: 200 response
               security: 
-                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
+                - CatchupCatchaUserPool: 
+                  #- "com.catchup-catcha/shows.selected"
+                  - !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -123,7 +128,7 @@ Resources:
       Tracing: Active
       Environment:
         Variables:
-          NODE_ENV: production
+          NODE_ENV: !Ref Stage
           TABLE_NAME: !Ref ShowSelectionsTable
           SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
           SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
