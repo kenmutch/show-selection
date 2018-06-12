@@ -37,7 +37,7 @@ Outputs:
     Value: !Ref ShowUnselectedEventsTopic
     Export:
       Name:
-      Fn::Sub: ShowUnselectedEventsTopic-${Stage}-export
+        Fn::Sub: ShowUnselectedEventsTopic-${Stage}-export
   
 Resources:
   ShowSelectionsApi:
