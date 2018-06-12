@@ -24,17 +24,20 @@ Outputs:
     Description: The show selections table name
     Value: !Ref ShowSelectionsTable
     Export:
-      Name: !Sub 'ShowSelectionsTable-${Stage}-export'
+      Name: 
+        Fn::Sub: ShowSelectionsTable-${Stage}-export
   ShowSelectedEventsTopic:
     Description: The show selected events topic
     Value: !Ref ShowSelectedEventsTopic
     Export:
-      Name: !Sub 'ShowSelectedEventsTopic-${Stage}-export'
+      Name: 
+        Fn::Sub: ShowSelectedEventsTopic-${Stage}-export
   ShowUnselectedEventsTopic:
     Description: The show unselected events topic
     Value: !Ref ShowUnselectedEventsTopic
     Export:
-      Name: !Sub 'ShowUnselectedEventsTopic-${Stage}-export'
+      Name:
+      Fn::Sub: ShowUnselectedEventsTopic-${Stage}-export
   
 Resources:
   ShowSelectionsApi:
@@ -56,7 +59,7 @@ Resources:
                   description: 200 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - !Sub "com.catchup-catcha-${Stage}/shows.selected"
+                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
                   #- !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
               x-amazon-apigateway-integration:
                 responses:
@@ -82,7 +85,7 @@ Resources:
                   description: 204 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - Sub "com.catchup-catcha-${Stage}/shows.selected"
+                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -104,7 +107,7 @@ Resources:
                   description: 200 response
               security: 
                 - CatchupCatchaUserPool: 
-                  - !Sub "com.catchup-catcha-${Stage}/shows.selected"
+                  - Fn:Sub: com.catchup-catcha-${Stage}/shows.selected
               x-amazon-apigateway-integration:
                 responses:
                   default:
