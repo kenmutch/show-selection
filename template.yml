@@ -19,6 +19,11 @@ Outputs:
     Description: The show selections table name
     Value: !Ref ShowSelectionsTable
     Export:
+      Name: ShowSelectionsTable-export
+  ShowSelectionsTableNameWithStage:
+    Description: The show selections table name
+    Value: !Ref ShowSelectionsTable
+    Export:
       Name: !Sub 'ShowSelectionsTable-${Stage}-export'
   ShowSelectedEventsTopic:
     Description: The show selected events topic
@@ -51,8 +56,8 @@ Resources:
                   description: 200 response
               security: 
                 - CatchupCatchaUserPool: 
-                  #- "com.catchup-catcha/shows.selected"
-                  - !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
+                  - !Sub "com.catchup-catcha-${Stage}/shows.selected"
+                  #- !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -76,7 +81,8 @@ Resources:
                 '204':
                   description: 204 response
               security: 
-                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
+                - CatchupCatchaUserPool: 
+                  - Sub "com.catchup-catcha-${Stage}/shows.selected"
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -97,7 +103,8 @@ Resources:
                 '200':
                   description: 200 response
               security: 
-                - CatchupCatchaUserPool: ["com.catchup-catcha/shows.selected"]
+                - CatchupCatchaUserPool: 
+                  - !Sub "com.catchup-catcha-${Stage}/shows.selected"
               x-amazon-apigateway-integration:
                 responses:
                   default:
