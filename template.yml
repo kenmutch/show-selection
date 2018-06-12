@@ -40,7 +40,7 @@ Resources:
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod
+      StageName: !Sub '${Stage}'
       DefinitionBody:
         swagger: '2.0'
         info:
