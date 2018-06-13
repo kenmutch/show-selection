@@ -60,7 +60,6 @@ Resources:
               security: 
                 - CatchupCatchaUserPool: 
                   - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
-                  #- !Sub 'com.catchup-catcha${!If [!Equals ["Prod", ${Stage}],"",".${Stage}"]}/shows.selected'
               x-amazon-apigateway-integration:
                 responses:
                   default:
@@ -132,6 +131,7 @@ Resources:
   ShowSelectionService:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub 'show-selections-service-${Stage}'
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
@@ -173,6 +173,7 @@ Resources:
   ShowSelectionsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
+      TableName: !Sub 'show-selections-table-prod'
       AttributeDefinitions: 
         - AttributeName: username
           AttributeType: S
@@ -189,10 +190,10 @@ Resources:
   ShowSelectedEventsTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: show-selected-events
-      TopicName: show-selected-events
+      DisplayName: !Sub 'show-selected-events-${Stage}'
+      TopicName: !Sub 'show-selected-events-${Stage}'
   ShowUnselectedEventsTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: show-unselected-events
-      TopicName: show-unselected-events
+      DisplayName: !Sub 'show-unselected-events-${Stage}'
+      TopicName: !Sub 'show-unselected-events-${Stage}'
