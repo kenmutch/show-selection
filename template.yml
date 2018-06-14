@@ -38,6 +38,9 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: !Sub '${Stage}'
+      MethodSettings:
+        LoggingLevel: INFO
+        DataTraceLogging: true
       DefinitionBody:
         swagger: '2.0'
         info:
