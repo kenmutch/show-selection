@@ -136,7 +136,7 @@ Resources:
           TABLE_NAME: !Ref ShowSelectionsTable
           SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
           SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
-          APP_NAME: 'show-selection-service'
+          APP_NAME: !Sub 'show-selection-service-${Stage}'
           LOG_LEVEL: INFO
       Policies: 
         - AmazonDynamoDBFullAccess
