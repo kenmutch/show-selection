@@ -137,7 +137,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: !Sub 'The ${Stage}'
-      StageName: !Sub '${Stage}'
+      StageName: DummyStage
       RestApiId: !Ref ShowSelectionsApiCf
 
   ShowSelectionsApi:
