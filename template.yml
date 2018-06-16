@@ -130,9 +130,10 @@ Resources:
       RestApiId: !Ref ShowSelectionsApiCf
       DeploymentId: !Ref ShowSelectionsApiCfDeployment
       MethodSettings:
-        - HttpMethod: '/*'
+        - HttpMethod: '*'
           LoggingLevel: INFO
           ResourcePath: '/*'
+          DataTraceEnabled: true
   ShowSelectionsApiCfDeployment:
     Type: AWS::ApiGateway::Deployment
     Properties:
