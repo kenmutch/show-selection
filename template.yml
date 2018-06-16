@@ -130,7 +130,7 @@ Resources:
       RestApiId: !Ref ShowSelectionsApiCf
       DeploymentId: !Ref ShowSelectionsApiCfDeployment
       MethodSettings:
-        - '/*/*':
+        - HttpMethod: '/*/*'
           LoggingLevel: INFO
           ResourcePath: '/'
   ShowSelectionsApiCfDeployment:
