@@ -139,7 +139,6 @@ Resources:
       Description: !Sub 'The ${Stage}'
       StageName: !Sub '${Stage}'
       RestApiId: !Ref ShowSelectionsApiCf
-      StageDescription: !Sub 'The ${Stage} deployment'
 
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
