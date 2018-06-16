@@ -129,16 +129,15 @@ Resources:
       StageName: !Sub '${Stage}'
       RestApiId: !Ref ShowSelectionsApiCf
       DeploymentId: !Ref ShowSelectionsApiCfDeployment
-      MethodSettings:
-        - GET:
-          LoggingLevel: INFO
-          ResourcePath: '/~1${Stage}'
   ShowSelectionsApiCfDeployment:
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: !Sub 'The ${Stage}'
       StageName: DummyStage
       RestApiId: !Ref ShowSelectionsApiCf
+      StageDescription:
+        LoggingLevel: INFO
+        Description: 'This comes from the Deployment resource'
 
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
