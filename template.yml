@@ -34,6 +34,113 @@ Outputs:
         Fn::Sub: ShowUnselectedEventsTopic-${Stage}-export
   
 Resources:
+  ShowSelectionsApiCf:
+    Type: AWS::ApiGateway::RestApi
+    Description: Show Selections API
+    Name: !Sub 'show-selection-api-${Stage}'
+    Properties:
+      Body:
+        swagger: '2.0'
+        info:
+          title: Show Selection API
+          version: '1.0.0'
+        schemes:
+          - https
+        paths:
+          /selected-shows:
+            get:
+              responses:
+                '200':
+                  description: 200 response
+              security: 
+                - CatchupCatchaUserPool: 
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+            post:
+              summary: Select a show
+              consumes:
+                - application/json
+              parameters:
+                - in: body
+                  name: showSlug
+                  description: The id of the show selected.
+                  schema:
+                    type: string
+              responses:
+                '204':
+                  description: 204 response
+              security: 
+                - CatchupCatchaUserPool: 
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '204'
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          '/selected-shows/{showSlug}':
+            delete:
+              parameters:
+                - name: showSlug
+                  in: path
+                  required: true
+                  type: string
+              responses:
+                '200':
+                  description: 200 response
+              security: 
+                - CatchupCatchaUserPool: 
+                  - Fn::Sub: com.catchup-catcha-${Stage}/shows.selected
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                requestParameters:
+                  integration.request.path.id: method.request.path.showSlug
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ShowSelectionService.Arn}/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+        securityDefinitions:
+          CatchupCatchaUserPool:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: cognito_user_pools
+              providerARNs:
+              - arn:aws:cognito-idp:ap-southeast-2:828944938596:userpool/ap-southeast-2_JS1CQbCvb
+  ShowSelectionsApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: !Sub '${Stage}'
+      RestApiId: !Ref ShowSelectionsApiCf
+      DeploymentId: !Ref ShowSelectionsApiDeployment
+      # MethodSettings:
+      #   - '/*/*':
+      #     LoggingLevel: INFO
+      #     ResourcePath: '/~1${Stage}'
+  ShowSelectionsApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: !Sub 'The ${Stage}'
+      StageName: !Sub '${Stage}'
+      RestApiId: !Ref ShowSelectionsApiCf
+      StageDescription: !Sub 'The ${Stage} deployment'
+
   ShowSelectionsApi:
     Type: AWS::Serverless::Api
     Properties:
