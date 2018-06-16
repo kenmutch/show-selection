@@ -123,7 +123,7 @@ Resources:
               type: cognito_user_pools
               providerARNs:
               - arn:aws:cognito-idp:ap-southeast-2:828944938596:userpool/ap-southeast-2_JS1CQbCvb
-  ShowSelectionsApiStage:
+  ShowSelectionsApiCfStage:
     Type: AWS::ApiGateway::Stage
     Properties:
       StageName: !Sub '${Stage}'
@@ -133,7 +133,7 @@ Resources:
       #   - '/*/*':
       #     LoggingLevel: INFO
       #     ResourcePath: '/~1${Stage}'
-  ShowSelectionsApiDeployment:
+  ShowSelectionsApiCfDeployment:
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: !Sub 'The ${Stage}'
