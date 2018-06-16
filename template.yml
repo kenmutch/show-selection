@@ -256,21 +256,21 @@ Resources:
             Path: /selected-shows
             Method: get
             RestApiId: 
-              Ref: ShowSelectionsApi
+              Ref: ShowSelectionsApiCf
         PostEvent:
           Type: Api
           Properties:
             Path: /selected-shows
             Method: post
             RestApiId:
-              Ref: ShowSelectionsApi
+              Ref: ShowSelectionsApiCf
         DeleteEvent:
           Type: Api
           Properties:
             Path: /selected-shows/{showSlug}
             Method: delete
             RestApiId: 
-              Ref: ShowSelectionsApi
+              Ref: ShowSelectionsApiCf
   ShowSelectionsTable:
     Type: AWS::DynamoDB::Table
     Properties: 
