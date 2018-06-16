@@ -128,7 +128,7 @@ Resources:
     Properties:
       StageName: !Sub '${Stage}'
       RestApiId: !Ref ShowSelectionsApiCf
-      DeploymentId: !Ref ShowSelectionsApiDeployment
+      DeploymentId: !Ref ShowSelectionsApiCfDeployment
       # MethodSettings:
       #   - '/*/*':
       #     LoggingLevel: INFO
