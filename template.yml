@@ -130,8 +130,9 @@ Resources:
       RestApiId: !Ref ShowSelectionsApiCf
       DeploymentId: !Ref ShowSelectionsApiCfDeployment
       MethodSettings:
-        LoggingLevel: INFO
-        ResourcePath: '/~1${Stage}'
+        - GET:
+          LoggingLevel: INFO
+          ResourcePath: '/~1${Stage}'
   ShowSelectionsApiCfDeployment:
     Type: AWS::ApiGateway::Deployment
     Properties:
