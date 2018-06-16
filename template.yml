@@ -36,9 +36,9 @@ Outputs:
 Resources:
   ShowSelectionsApiCf:
     Type: AWS::ApiGateway::RestApi
-    Description: Show Selections API
-    Name: !Sub 'show-selection-api-${Stage}'
     Properties:
+      Description: Show Selections API
+      Name: !Sub 'show-selection-api-${Stage}'
       Body:
         swagger: '2.0'
         info:
