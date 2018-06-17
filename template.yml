@@ -38,7 +38,7 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Description: Show Selections API
-      Name: !Sub 'show-selection-api-${Stage}'
+      Name: !Sub 'show-selection-api-cf-${Stage}'
       Body:
         swagger: '2.0'
         info:
