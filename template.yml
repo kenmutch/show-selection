@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform:
-- AWS::Serverless-2016-10-31
+# - AWS::Serverless-2016-10-31
 - AWS::CodeStar
 
 Parameters:
@@ -135,13 +135,211 @@ Resources:
           ResourcePath: '/*'
           DataTraceEnabled: true
   ShowSelectionsApiCfDeployment:
+    # DependsOn:
+    #   - ShowSelectionServiceCfPostEventPermissionStage
+    #   - ShowSelectionServiceCfPostEventPermissionTest
+    #   - ShowSelectionServiceCfDeleteEventPermissionTest
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: !Sub 'The ${Stage}'
       StageName: DummyStage
       RestApiId: !Ref ShowSelectionsApiCf
+  ShowSelectionServiceCf:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: Show Selection Service
+      FunctionName: !Sub 'show-selections-service-cf-${Stage}'
+      Code: 
+        S3Bucket: aws-codestar-${AWS::Region}-${AWS::AccountId}-show-selection-pipe
+        S3Key: show-selections-service-cf.zip
+      Handler: src/index.handler
+      Runtime: nodejs8.10
+      Timeout: 15
+      TracingConfig:
+        Mode: Active
+      Role: Fn::GetAttr
+        - ShowSelectionServiceCfRole
+        - Arn
+      Environment:
+          Variables:
+            NODE_ENV: !Ref Stage
+            TABLE_NAME: !Ref ShowSelectionsTable
+            SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
+            SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
+            APP_NAME: !Sub 'show-selection-service-cf-${Stage}'
+            LOG_LEVEL: INFO
+  ShowSelectionServiceCfRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'ShowSelectionServiceCfRole-${Stage}'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      - arn:aws:iam::aws:policy/AmazonSNSFullAccess
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+  ShowSelectionServiceGetEventPermissionTest:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/GET/selected-shows
+        - __Stage__: "*"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
+  ShowSelectionServiceGetEventPermissionStage:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/GET/selected-shows
+        - __Stage__:
+            Fn::Sub: "${Stage}"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
+  ShowSelectionServiceCfPostEventPermissionTest:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/POST/selected-shows
+        - __Stage__: "*"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
+  ShowSelectionServiceCfPostEventPermissionStage:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/POST/selected-shows
+        - __Stage__:
+            Fn::Sub: "${Stage}"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
+  ShowSelectionServiceCfDeleteEventPermissionTest:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/DELETE/selected-shows/{showSlug}
+        - __Stage__: "*"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
+  ShowSelectionServiceDeleteEventPermissionStage:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Ref: ShowSelectionService
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/DELETE/selected-shows/{showSlug}
+        - __Stage__:
+            Fn::Sub: "${Stage}"
+          __ApiId__:
+            Ref: ShowSelectionsApiCf
 
-  # ShowSelectionsApi:
+  ShowSelectionService:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'show-selections-service-${Stage}'
+      Handler: src/index.handler
+      Runtime: nodejs8.10
+      Timeout: 15
+      Tracing: Active
+      Environment:
+        Variables:
+          NODE_ENV: !Ref Stage
+          TABLE_NAME: !Ref ShowSelectionsTable
+          SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
+          SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
+          APP_NAME: !Sub 'show-selection-service-${Stage}'
+          LOG_LEVEL: INFO
+      Policies: 
+        - AmazonDynamoDBFullAccess
+        - AWSXrayWriteOnlyAccess
+        - AmazonSNSFullAccess
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /selected-shows
+            Method: get
+            RestApiId: 
+              Ref: ShowSelectionsApiCf
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /selected-shows
+            Method: post
+            RestApiId:
+              Ref: ShowSelectionsApiCf
+        DeleteEvent:
+          Type: Api
+          Properties:
+            Path: /selected-shows/{showSlug}
+            Method: delete
+            RestApiId: 
+              Ref: ShowSelectionsApiCf
+
+  ShowSelectionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: !Sub 'show-selections-table-${Stage}'
+      AttributeDefinitions: 
+        - AttributeName: username
+          AttributeType: S
+        - AttributeName: showSlug
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: username
+          KeyType: HASH
+        - AttributeName: showSlug
+          KeyType: RANGE
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 1
+  ShowSelectedEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Sub 'show-selected-events-${Stage}'
+      TopicName: !Sub 'show-selected-events-${Stage}'
+  ShowUnselectedEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Sub 'show-unselected-events-${Stage}'
+      TopicName: !Sub 'show-unselected-events-${Stage}'
+
+       # ShowSelectionsApi:
   #   Type: AWS::Serverless::Api
   #   Properties:
   #     StageName: !Sub '${Stage}'
@@ -229,72 +427,3 @@ Resources:
   #             type: cognito_user_pools
   #             providerARNs:
   #             - arn:aws:cognito-idp:ap-southeast-2:828944938596:userpool/ap-southeast-2_JS1CQbCvb
-  ShowSelectionService:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'show-selections-service-${Stage}'
-      Handler: src/index.handler
-      Runtime: nodejs8.10
-      Timeout: 15
-      Tracing: Active
-      Environment:
-        Variables:
-          NODE_ENV: !Ref Stage
-          TABLE_NAME: !Ref ShowSelectionsTable
-          SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
-          SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
-          APP_NAME: !Sub 'show-selection-service-${Stage}'
-          LOG_LEVEL: INFO
-      Policies: 
-        - AmazonDynamoDBFullAccess
-        - AWSXrayWriteOnlyAccess
-        - AmazonSNSFullAccess
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /selected-shows
-            Method: get
-            RestApiId: 
-              Ref: ShowSelectionsApiCf
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /selected-shows
-            Method: post
-            RestApiId:
-              Ref: ShowSelectionsApiCf
-        DeleteEvent:
-          Type: Api
-          Properties:
-            Path: /selected-shows/{showSlug}
-            Method: delete
-            RestApiId: 
-              Ref: ShowSelectionsApiCf
-  ShowSelectionsTable:
-    Type: AWS::DynamoDB::Table
-    Properties: 
-      TableName: !Sub 'show-selections-table-${Stage}'
-      AttributeDefinitions: 
-        - AttributeName: username
-          AttributeType: S
-        - AttributeName: showSlug
-          AttributeType: S
-      KeySchema: 
-        - AttributeName: username
-          KeyType: HASH
-        - AttributeName: showSlug
-          KeyType: RANGE
-      ProvisionedThroughput: 
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 1
-  ShowSelectedEventsTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: !Sub 'show-selected-events-${Stage}'
-      TopicName: !Sub 'show-selected-events-${Stage}'
-  ShowUnselectedEventsTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: !Sub 'show-unselected-events-${Stage}'
-      TopicName: !Sub 'show-unselected-events-${Stage}'
