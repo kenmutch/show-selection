@@ -157,15 +157,16 @@ Resources:
       Timeout: 15
       TracingConfig:
         Mode: Active
-      Role: Fn::GetAtt
+      Role: 
+        Fn::GetAtt:
         - ShowSelectionServiceCfRole
         - Arn
       Environment:
           Variables:
             NODE_ENV: !Ref Stage
-            # TABLE_NAME: !Ref ShowSelectionsTable
-            # SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
-            # SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
+            TABLE_NAME: !Ref ShowSelectionsTable
+            SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
+            SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
             APP_NAME: !Sub 'show-selection-service-cf-${Stage}'
             LOG_LEVEL: INFO
   ShowSelectionServiceCfRole:
