@@ -178,6 +178,7 @@ Resources:
       - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
       - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
       - arn:aws:iam::aws:policy/AmazonSNSFullAccess
+      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
