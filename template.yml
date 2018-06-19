@@ -150,14 +150,14 @@ Resources:
       Description: Show Selection Service
       FunctionName: !Sub 'show-selections-service-cf-${Stage}'
       Code: 
-        S3Bucket: aws-codestar-${AWS::Region}-${AWS::AccountId}-show-selection-pipe
+        S3Bucket: aws-codestar-ap-southeast-2-828944938596-show-selection-pipe
         S3Key: show-selections-service-cf.zip
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
       TracingConfig:
         Mode: Active
-      Role: Fn::GetAttr
+      Role: Fn::GetAtt
         - ShowSelectionServiceCfRole
         - Arn
       Environment:
