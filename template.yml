@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform:
-# - AWS::Serverless-2016-10-31
+- AWS::Serverless-2016-10-31
 - AWS::CodeStar
 
 Parameters:
@@ -163,9 +163,9 @@ Resources:
       Environment:
           Variables:
             NODE_ENV: !Ref Stage
-            TABLE_NAME: !Ref ShowSelectionsTable
-            SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
-            SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
+            # TABLE_NAME: !Ref ShowSelectionsTable
+            # SHOW_SELECTED_EVENTS_TOPIC_ARN: !Ref ShowSelectedEventsTopic
+            # SHOW_UNSELECTED_EVENTS_TOPIC_ARN: !Ref ShowUnselectedEventsTopic
             APP_NAME: !Sub 'show-selection-service-cf-${Stage}'
             LOG_LEVEL: INFO
   ShowSelectionServiceCfRole:
