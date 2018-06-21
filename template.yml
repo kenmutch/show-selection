@@ -149,9 +149,8 @@ Resources:
     Properties:
       Description: Show Selection Service
       FunctionName: !Sub 'show-selections-service-cf-${Stage}'
-      Code: 
-        S3Bucket: aws-codestar-ap-southeast-2-828944938596-show-selection-pipe
-        S3Key: show-selections-service-cf.zip
+      Code:
+        Zipfile: /vagrant/build-output.zip
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
