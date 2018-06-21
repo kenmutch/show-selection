@@ -15,6 +15,9 @@ Outputs:
   ShowSelectionsApi:
     Description: The API endpoint
     Value: !Ref ShowSelectionsApi
+  ShowSelectionsApiCf:
+    Description: The API endpoint
+    Value: !Ref ShowSelectionsApiCf
   ShowSelectionsTableName:
     Description: The show selections table name
     Value: !Ref ShowSelectionsTable
