@@ -153,7 +153,7 @@ Resources:
       Description: Show Selection Service
       FunctionName: !Sub 'show-selections-service-cf-${Stage}'
       Code:
-        Zipfile: /vagrant/build-output.zip
+        ZipFile: /vagrant/build-output.zip
       Handler: src/index.handler
       Runtime: nodejs8.10
       Timeout: 15
